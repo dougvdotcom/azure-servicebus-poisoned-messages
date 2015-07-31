@@ -46,20 +46,14 @@ namespace WorkerRoleWithSBQueue1
 
 		public override bool OnStart()
 		{
-			// Set the maximum number of concurrent connections 
 			ServicePointManager.DefaultConnectionLimit = 12;
-
-			// Create the queue if it does not exist already
 			var connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
-
-			// Initialize the connection to Service Bus Queue
 			_client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
 			return base.OnStart();
 		}
 
 		public override void OnStop()
 		{
-			// Close the connection to Service Bus Queue
 			_client.Close();
 			_completedEvent.Set();
 			base.OnStop();
